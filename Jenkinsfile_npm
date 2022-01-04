@@ -1,9 +1,9 @@
 pipeline {
     agent any
     tools {
-        maven 'Maven 3.3.9'
+        maven 'maven'
         jdk 'jdk8'
-        nodejs "node"
+        //nodejs "node"
     }
     stages {
         stage ('Initialize') {
@@ -18,12 +18,13 @@ pipeline {
         stage ('Build') {
             steps {
                 sh 'mvn test || true'
-                sh 'npm install -g railflow'
-                sh 'railflow --version'
+                //sh 'npm install -g railflow'
+                //sh 'railflow --version'
             }
             post {
-                success {
+                always {
                     junit 'target/surefire-reports/**/*.xml' 
+                    archiveArtifacts "target/surefire-reports/emailable-report.html"
                 }
             }
         }
